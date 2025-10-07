@@ -1,0 +1,42 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+    - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Docker image
+      run: |
+        docker build -t $REGISTRY/${{ env.IMAGE_NAME }}:latest .
+
+    - name: Tag image with SHA
+      run: |
+        docker tag $REGISTRY/${{ env.IMAGE_NAME }}:latest $REGISTRY/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+    - name: Push images
+      run: |
+        docker push $REGISTRY/${{ env.IMAGE_NAME }}:latest
+        docker push $REGISTRY/${{ env.IMAGE_NAME }}:${{ github.sha }}
