@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository | lower }}
+  IMAGE_NAME: fenil-gajjar/next-js-devops-task
 
 jobs:
   build:
