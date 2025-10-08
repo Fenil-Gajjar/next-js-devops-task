@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js DevOps Deployment
 
-## Getting Started
+## Project Overview
 
-First, run the development server:
+This project demonstrates a comprehensive DevOps workflow for a Next.js application, encompassing containerization, automated Continuous Integration/Continuous Deployment (CI/CD), and deployment to a local Kubernetes cluster (Minikube). It showcases best practices for building, testing, and deploying modern web applications in a consistent and repeatable manner.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Purpose
+
+The primary purpose of this project is to illustrate a full-stack DevOps pipeline for a Next.js application, covering:
+
+*   **Containerization** using Docker for consistent environments.
+*   **Automated CI/CD** with GitHub Actions to streamline build and deployment processes.
+*   **Deployment** to a local Kubernetes cluster (Minikube) for scalable and resilient application hosting.
+*   **Multiple access methods** to test and interact with the deployed application.
+
+## Technology Stack
+
+| Category         | Technology                                   |
+| :--------------- | :------------------------------------------- |
+| **Frontend**     | Next.js (React-based, Server-Side Rendered)  |
+| **Runtime**      | Node.js & npm                                |
+| **Containerization** | Docker (Multi-stage builds)                  |
+| **Version Control** | Git & GitHub                                 |
+| **CI/CD**        | GitHub Actions                               |
+| **Orchestration** | Kubernetes (Minikube, Deployment, Service)   |
+| **Operating System** | Ubuntu 22.04 LTS (or similar Linux VM)       |
+
+## Architecture Overview
+
+The project's architecture follows a standard cloud-native approach, leveraging containerization and orchestration for robust deployment. The Next.js application is containerized using Docker, ensuring environmental consistency from development to production. GitHub Actions serve as the CI/CD pipeline, automatically building and pushing Docker images to GitHub Container Registry (GHCR) upon code changes. These images are then deployed to a Kubernetes cluster (Minikube for local development), managed by Kubernetes Deployment and Service resources. The application can be accessed via various methods, including NodePort, Port-Forwarding, or an optional Ingress controller.
+
+```mermaid
+graph TD
+    A[Developer] -->|Push Code| B(GitHub Repository)
+    B -->|Trigger| C(GitHub Actions CI/CD)
+    C -->|Build Docker Image| D(Docker)
+    D -->|Push Image| E(GitHub Container Registry - GHCR)
+    E -->|Deploy Image| F(Kubernetes Cluster - Minikube)
+    F -->|Hosts| G(Next.js Application Pods)
+    G -->|Exposes Service| H(Kubernetes Service)
+    H -->|Access via NodePort/Port-Forward/Ingress| I[User/Browser]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Detailed Documentation
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+For an in-depth understanding of each component and step, please refer to the following detailed documentation files:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*   [Prerequisites & Environment Setup](docs/prerequisites.md)
+*   [Project Setup & Local Run](docs/local-setup.md)
+*   [Dockerization](docs/dockerization.md)
+*   [CI/CD Setup Using GitHub Actions](docs/ci-cd.md)
+*   [Kubernetes Deployment & Application Access](docs/kubernetes-deployment.md)
+*   [Project Directory Walkthrough](docs/directory-walkthrough.md)
+*   [Key Features Implemented](docs/features.md)
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
